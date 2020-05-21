@@ -71,7 +71,7 @@ class Player extends MovableEntity {
 	* Instantiates a bullet in front of the player.
 	*/
 	shoot () {
-		new Bullet (this.containerElement, this.mapInstance, this.direction);
+		new Bullet (this.containerElement, this.mapInstance, this.direction, this.position);
 	}
 
 	/**
