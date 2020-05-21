@@ -21,6 +21,10 @@ function frame () {
 	// if the player is pressing one of the keys, call the turn function
 	if (pressedKeys['a'] || pressedKeys['ArrowLeft']) player.turn(-1);
 	if (pressedKeys['d'] || pressedKeys['ArrowRight']) player.turn(1);
+	// Here w gets the positive orientation and s the negative
+	// so the player can move more freely
+	if (pressedKeys['w'] || pressedKeys['ArrowUp']) player.move(1);
+	if (pressedKeys['s'] || pressedKeys['ArrowDown']) player.move(-1);
 }
 
 // This is a dictionary that will hold the keys that are being held down at the time.
