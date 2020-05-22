@@ -26,8 +26,8 @@ class Bullet extends MovableEntity {
 		// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes#Sub_classing_with_extends
 		super(containerElement, BULLET_SIZE, bulletPosition, direction.normalize().scale(BULLET_SPEED), direction);
 
-		this.bulletType = this.assignBulletType(); 
 		this.bulletSpecial = 1;
+		this.bulletType = this.assignBulletType(); 
 
 		this.mapInstance = mapInstance;
 
@@ -45,8 +45,14 @@ class Bullet extends MovableEntity {
 	* to a special function
 	*/
 	assignBulletType() {
-		let allTypes = ["ricochet", "explosive", "common"];
-		return allTypes[Math.floor( Math.random() * 2)];
+		let allTypes = ["ricochet", "explosive", "common", "common", "common", "common"];
+		let thisType = allTypes[Math.floor( (Math.random() * 6) - 1)];
+		
+		// assigns the bulletspecial property, which is interpreted
+		// differently on each fuction
+		this.bulletSpecial = 1;
+
+		return thisType;
 	}
 
 	// If the bullet collides with an asteroid, delete the bullet.
@@ -59,12 +65,28 @@ class Bullet extends MovableEntity {
 
 	/*  
 	* Called when bullet in on map border and of "ricochet" type
-	* reverses the velocity, effectively making it ricochet
+	* reverses the velocity, effectively making it ricochet.
+	* Here bulletSpecial stores how many ricochets are done.
 	*/
 	ricochet() {
 		if (this.bulletSpecial != 0){
 			this.bulletSpecial--;
 			this.velocity = this.velocity.scale(-1);
 		};
+	}
+
+	/* 
+	* Called when bullet is shot, waits 800ms for explosion
+	* and then another 500ms for deletion of the element.
+	* Here bulletSpecial primes the explosion, acting as a boolean.
+	*/
+	explode() {
+		this.bulletSpecial = 0;
+		setTimeout(() => {
+			this.size = 150;
+			setTimeout(() => {
+				this.delete;
+			}, 0.5 * 1000)
+		}, 0.8 * 1000);
 	}
 }

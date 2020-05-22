@@ -94,8 +94,9 @@ class Map {
 			// Used to process new bullet functions
 			if (entity1 instanceof Bullet){
 				if (entity1.distanceFromCenter() > 280 && entity1.bulletType === "ricochet") entity1.ricochet();
-				// if (entity1.bulletType === "explosive") entity1.explode();
-			} 
+				if (entity1.bulletType === "explosive") entity1.explode();
+			};
+			 
 			for (let j = i + 1; j < this.movableEntities.length; j ++) {
 				// Verify collision between all game objects
 				const entity2 = this.movableEntities[j];
