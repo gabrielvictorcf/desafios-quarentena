@@ -26,6 +26,9 @@ class Bullet extends MovableEntity {
 		// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes#Sub_classing_with_extends
 		super(containerElement, BULLET_SIZE, bulletPosition, direction.normalize().scale(BULLET_SPEED), direction);
 
+		this.bulletType = this.assignBulletType(); 
+		this.bulletSpecial = 1;
+
 		this.mapInstance = mapInstance;
 
 		// This is so the map can execute the player's physics (see the `frame` function
@@ -37,11 +40,31 @@ class Bullet extends MovableEntity {
 		this.rootElement.style.backgroundSize = this.size + 'px';
 	}
 
+	/* 
+	* Assigns a type on bullet creation, giving it acess
+	* to a special function
+	*/
+	assignBulletType() {
+		let allTypes = ["ricochet", "explosive", "common"];
+		return allTypes[Math.floor( Math.random() * 2)];
+	}
+
 	// If the bullet collides with an asteroid, delete the bullet.
 	collided (object) {
 		if (object instanceof Asteroid) {
 			this.mapInstance.removeEntity(this);
 			this.delete();
 		}
+	}
+
+	/*  
+	* Called when bullet in on map border and of "ricochet" type
+	* reverses the velocity, effectively making it ricochet
+	*/
+	ricochet() {
+		if (this.bulletSpecial != 0){
+			this.bulletSpecial--;
+			this.velocity = this.velocity.scale(-1);
+		};
 	}
 }
