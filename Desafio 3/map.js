@@ -79,7 +79,7 @@ class Map {
 		// is considerate, this hurts perfomance.
 		// const asteroidSpawnChance = 0.003 + Math.sqrt(Date.now() - this.gameStartTimestamp) / 10000000;
 
-		// With a static rate the performance should be better
+		// With a static rate the performance should be better overall
 		const asteroidSpawnChance = 0.005;
 
 

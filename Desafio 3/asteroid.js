@@ -29,8 +29,8 @@ class Asteroid extends MovableEntity {
 		
 		this.mapInstance = mapInstance;
 		this.rotationSpeed = Asteroid.getRandomRotationSpeed();
-		this.containerforChild = containerElement;
-		this.cameFromExplosion = false;
+		/* this.containerforChild = containerElement;
+		this.cameFromExplosion = false; */
 
 		// This is so the map can execute the player's physics (see the `frame` function
 		// in the `map.js` file
@@ -47,8 +47,9 @@ class Asteroid extends MovableEntity {
 		this.mutateProperties();
 
 		// Finds a random image to assign to the asteroid's element
-		const asteroidImageIndex = Math.floor(Math.random() * 3) + 1;
-		this.rootElement.style.backgroundImage = `url('assets/asteroid-${asteroidImageIndex}.svg')`;
+/* 		const asteroidImageIndex = Math.floor(Math.random() * 3) + 1;
+		this.rootElement.style.backgroundImage = `url('assets/asteroid-${asteroidImageIndex}.svg')`; */
+		this.rootElement.style.backgroundImage = `url('assets/agorasim.png')`;
 		this.rootElement.style.backgroundSize = size + 'px';
 	}
 
@@ -92,7 +93,7 @@ class Asteroid extends MovableEntity {
 
 	assignSpecialType () {
 		let allTypes = ["massive", "explosive", "common", "common", "common", "common", "common", "common"];
-		return allTypes[Math.floor( (Math.random() * 8 ) - 1)];
+		return allTypes[Math.floor( (Math.random() * 7 ) + 1)];
 	}
 
 	mutateProperties() {
@@ -104,12 +105,12 @@ class Asteroid extends MovableEntity {
 			this.rotationSpeed *= 0.5;
 			return;
 		};
-		if (this.specialType === "explosive"){
+		/* if (this.specialType === "explosive"){
 			this.life = 1;
 			this.size *= 0.8;
 			this.rotationSpeed *= 1.5;
 			return;
-		};
+		}; */
 	}
 
 	/**
@@ -125,12 +126,13 @@ class Asteroid extends MovableEntity {
 
 		this.life --;
 		if (this.life === 0) {
-			if (this.specialType === "explosive"){
+			/* if (this.specialType === "explosive"){
 				// spawn asteroids on same position
 				let childrenPosition = this.position;
 				let childAsteroid = new Asteroid(this.containerforChild, this.mapInstance, childrenPosition);
 				childAsteroid.cameFromExplosion = true;
-			};
+			}; */
+			
 			this.mapInstance.removeEntity(this);
 			this.delete();
 			// Iterates the destroyed asteroid counter
