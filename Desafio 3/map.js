@@ -75,7 +75,13 @@ class Map {
 	shouldAsteroidSpawn () {
 		// Note that the formula considers how long the gave have been going.
 		// the longed the game, the higher the chance to spawn more asteroids.
-		const asteroidSpawnChance = 0.003 + Math.sqrt(Date.now() - this.gameStartTimestamp) / 10000000;
+		// In case the player doesn't destroy many asteroids and the game's duration
+		// is considerate, this hurts perfomance.
+		// const asteroidSpawnChance = 0.003 + Math.sqrt(Date.now() - this.gameStartTimestamp) / 10000000;
+
+		// With a static rate the performance should be better overall
+		const asteroidSpawnChance = 0.005;
+
 
 		return Math.random() < asteroidSpawnChance;
 	}

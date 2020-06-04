@@ -1,5 +1,7 @@
 * {
 	box-sizing: border-box;
+	background-image: url(assets/galaxybackground.jpg);
+	background-position: center;
 }
 
 body, html {
@@ -17,6 +19,7 @@ body, html {
 }
 
 #arena-line {
+	background-image: none;
 	height: 500px;
 	width: 500px;
 	display: flex;
@@ -34,4 +37,55 @@ body, html {
 
 .movable-entity {
 	position: absolute;
+}
+
+#counters {
+	background-image: none;
+	background-color: blueviolet;
+	border-radius: 50px;
+	opacity: 0.6;
+	float: left;
+	margin-top: 50px;
+	margin-bottom: 15px;
+	padding-left: 50px;
+	align-items: center;
+	font-size: 2em;
+	color: gold;
+	width: 450px;
+	height: 500px;
+}
+
+#nuke{
+	margin-left: 30px;
+	font-size: 1em;
+	color: red;
+}
+
+#time-counter {
+	background-image: none;
+	background-color: crimson;
+	border-radius: 25px;
+	opacity: 0.6;
+	float: left;
+	margin-top: 100px;
+	margin-bottom: 40px;
+	align-items: center;
+	font-size: 2em;
+	color: gold;
+	width: 350px;
+	height: 150px;
+}
+
+#asteroid-counter {
+	background-image: none;
+	background-color: crimson;
+	border-radius: 25px;
+	opacity: 0.6;
+	float: left;
+	margin-bottom: 15px;
+	align-items: center;
+	font-size: 2em;
+	color: gold;
+	width: 350px;
+	height: 150px;
 }

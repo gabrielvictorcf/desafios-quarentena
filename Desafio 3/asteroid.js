@@ -21,14 +21,16 @@ class Asteroid extends MovableEntity {
 	) {
 		const size = Asteroid.getRandomSize();
 		const direction = Asteroid.getRandomDirection();
-
+		
 		// The `super` function will call the constructor of the parent class.
 		// If you'd like to know more about class inheritance in javascript, see this link
 		// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes#Sub_classing_with_extends
 		super(containerElement, size, initialPosition, initialPosition.scale(-0.001), direction);
-
+		
 		this.mapInstance = mapInstance;
 		this.rotationSpeed = Asteroid.getRandomRotationSpeed();
+		/* this.containerforChild = containerElement;
+		this.cameFromExplosion = false; */
 
 		// This is so the map can execute the player's physics (see the `frame` function
 		// in the `map.js` file
@@ -37,9 +39,17 @@ class Asteroid extends MovableEntity {
 		// initializes the asteroid's life to it's maximum.
 		this.life = this.calculateMaxLife();
 
+		// Assigns type to asteroid
+		// this.specialType = "explosive"; 
+		this.specialType = this.assignSpecialType(); 
+
+		// Modifies asteroid properties based on type
+		this.mutateProperties();
+
 		// Finds a random image to assign to the asteroid's element
-		const asteroidImageIndex = Math.floor(Math.random() * 3) + 1;
-		this.rootElement.style.backgroundImage = `url('assets/asteroid-${asteroidImageIndex}.svg')`;
+/* 		const asteroidImageIndex = Math.floor(Math.random() * 3) + 1;
+		this.rootElement.style.backgroundImage = `url('assets/asteroid-${asteroidImageIndex}.svg')`; */
+		this.rootElement.style.backgroundImage = `url('assets/agorasim.png')`;
 		this.rootElement.style.backgroundSize = size + 'px';
 	}
 
@@ -81,6 +91,28 @@ class Asteroid extends MovableEntity {
 		return Math.round(sizePercentage * (MAX_ASTEROID_LIFE - MIN_ASTEROID_LIFE) + MIN_ASTEROID_LIFE);
 	}
 
+	assignSpecialType () {
+		let allTypes = ["massive", "explosive", "common", "common", "common", "common", "common", "common"];
+		return allTypes[Math.floor( (Math.random() * 7 ) + 1)];
+	}
+
+	mutateProperties() {
+		if (this.specialType === "common") return;
+		if (true === typeof(this.cameFromExplosion)) return;
+		if (this.specialType === "massive"){
+			this.life *= 1.5;
+			this.size *= 2;
+			this.rotationSpeed *= 0.5;
+			return;
+		};
+		/* if (this.specialType === "explosive"){
+			this.life = 1;
+			this.size *= 0.8;
+			this.rotationSpeed *= 1.5;
+			return;
+		}; */
+	}
+
 	/**
 	* Uppon collision with a bullet, reduces the asteroid's life. If the asteroid
 	* has zero life, destroy it.
@@ -94,9 +126,17 @@ class Asteroid extends MovableEntity {
 
 		this.life --;
 		if (this.life === 0) {
+			/* if (this.specialType === "explosive"){
+				// spawn asteroids on same position
+				let childrenPosition = this.position;
+				let childAsteroid = new Asteroid(this.containerforChild, this.mapInstance, childrenPosition);
+				childAsteroid.cameFromExplosion = true;
+			}; */
+			
 			this.mapInstance.removeEntity(this);
 			this.delete();
-			// Iterates the counter and displays it on the HTML
+			// Iterates the destroyed asteroid counter
+			// for displaying on the HTML
 			updateAsteroidCounter();
 		}
 	}

@@ -41,7 +41,7 @@ class Player extends MovableEntity {
 		mapInstance.addEntity(this);
 
 		// Assigns the player's image to it's element
-		this.rootElement.style.backgroundImage = "url('assets/player.svg')";
+		this.rootElement.style.backgroundImage = "url('assets/DurrrSpaceShip.png')";
 		this.rootElement.style.backgroundSize = this.size + 'px';
 	}
 

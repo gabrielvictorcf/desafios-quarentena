@@ -32,6 +32,18 @@ function frame () {
 // https://pietschsoft.com/post/2015/09/05/javascript-basics-how-to-create-a-dictionary-with-keyvalue-pairs
 const pressedKeys = {};
 
+// Should kill all asteroids on screen
+const sendTacticalNuke = () => {
+	map.movableEntities.forEach(entity => {
+		if (entity instanceof Asteroid){
+			entity.mapInstance.removeEntity(entity);
+			entity.delete();
+		} 
+	});
+}
+
+document.getElementById("nuke").addEventListener("click", sendTacticalNuke);
+
 // This function will run every time the player presses a key
 document.body.addEventListener('keydown', event => {
 	// if that key is the spacebar, the player will shoot.

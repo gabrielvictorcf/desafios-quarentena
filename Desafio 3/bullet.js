@@ -36,7 +36,7 @@ class Bullet extends MovableEntity {
 		mapInstance.addEntity(this);
 
 		// Assigns the bullet's image to it's element
-		this.rootElement.style.backgroundImage = "url('assets/bullet.svg')";
+		this.rootElement.style.backgroundImage = "url('assets/projectile.png')";
 		this.rootElement.style.backgroundSize = this.size + 'px';
 	}
 
