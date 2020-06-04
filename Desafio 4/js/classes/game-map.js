@@ -55,11 +55,12 @@ class GameMap extends Entity {
 		for (let i = 0; i < this.calculateNumberOfRocks(); i ++) {
 			this.generateItem('rock');
 		}
+		document.getElementById('current-level').innerHTML = "Level: " + this.level;
 	}
-
+	
 	nextLevel () {
 		this.level ++;
-		console.log('next level');
+		// console.log('next level');
 		// Delete all remaining gold and rock elements
 		Gold.allGoldElements.forEach(gold => gold.delete());
 		Rock.allRockElements.forEach(rock => rock.delete());
