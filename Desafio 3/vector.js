@@ -14,7 +14,7 @@ class Vector {
 	}
 
 	/**
-	* Adds two this vector with otherVector
+	* Adds to this vector with otherVector
 	* @argument { Vector } otherVector
 	* @returns { Vector }
 	*/
@@ -23,7 +23,7 @@ class Vector {
 	}
 
 	/**
-	* Subtracts two this vector with otherVector
+	* Subtracts to this vector with otherVector
 	* @argument { Vector } otherVector
 	* @returns { Vector }
 	*/
@@ -54,12 +54,12 @@ class Vector {
 
 	/**
 	* Scales this vector.
-	* A scaled vector is the original vector with 'ammount' times it's magnitude.
-	* @argument { number } ammount
+	* A scaled vector is the original vector with 'amount' times it's magnitude.
+	* @argument { number } amount
 	* @returns { Vector }
 	*/
-	scale (ammount) {
-		return new Vector(this.x * ammount, this.y * ammount);
+	scale (amount) {
+		return new Vector(this.x * amount, this.y * amount);
 	}
 
 	/** Returns a rotated version of this vector

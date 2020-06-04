@@ -23,7 +23,7 @@ class MovableEntity {
 		this.velocity = initialVelocity;
 		this.direction = direction;
 
-		// Creates the element that will visually represent this MobableEntity
+		// Creates the element that will visually represent this MovableEntity
 		this.rootElement = document.createElement('div');
 		this.rootElement.classList.add('movable-entity');
 		this.rootElement.style.width = size + 'px';

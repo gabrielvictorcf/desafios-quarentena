@@ -55,6 +55,14 @@ class Cell {
   // (This function is called inside cellRightClick function that are in the Map class,
   // you dont need to worry with that)
   // *************************************************************************************
+	toggleFlag (){
+		if (!this.isFlagged){
+			this.element.classList.add('flag');
+		}
+		else{
+			this.element.classList.remove('flag');
+		};
+	};
 }
 
 class Map {
@@ -64,7 +72,7 @@ class Map {
 		this.height = height;
 		this.bombCount = numberOfBombs;
 		this.hasMapBeenClickedYet = false;
-		this.isGameOver = false;
+		this.playerChances = 2;
 		this.visibleCells = 0;
 
 		for (let row = 0; row < height; row ++) {
@@ -134,7 +142,7 @@ class Map {
 
 	// Funtion called when player left clicks a cell
 	cellLeftClick (clickedCell) {
-		if (this.isGameOver) return;
+		if (this.playerChances === 0) return;
 		if (clickedCell.isFlagged) return;
 		if (clickedCell.visited) return;
 		if (!this.hasMapBeenClickedYet) {
@@ -142,9 +150,14 @@ class Map {
 			this.placeAllNumbersInMap();
 			this.hasMapBeenClickedYet = true;
 		}
+		// Reduces players chances on bomb click, if 0 game is over
 		if (clickedCell.isBomb) {
 			clickedCell.element.style.backgroundColor = 'red';
-			this.gameOver();
+			clickedCell.element.classList.add('bomb');
+			this.playerChances -= 1;
+			if(this.playerChances === 0){
+				this.gameOver();
+			}
 			return;
 		}
 		clickedCell.reveal();
@@ -164,7 +177,7 @@ class Map {
 	}
 
 	cellRightClick (clickedCell) {
-		if (this.isGameOver) return;
+		if (this.playerChances === 0) return;
 		if (clickedCell.visited) return;
 		clickedCell.toggleFlag();
 	}
@@ -176,7 +189,6 @@ class Map {
 				if (cell.isBomb && !cell.isFlagged) cell.reveal();
 			}
 		}
-		this.isGameOver = true;
 	}
 }
 
