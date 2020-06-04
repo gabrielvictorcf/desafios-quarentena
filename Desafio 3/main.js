@@ -21,12 +21,28 @@ function frame () {
 	// if the player is pressing one of the keys, call the turn function
 	if (pressedKeys['a'] || pressedKeys['ArrowLeft']) player.turn(-1);
 	if (pressedKeys['d'] || pressedKeys['ArrowRight']) player.turn(1);
+	// Here w gets the positive orientation and s the negative
+	// so the player can move more freely
+	if (pressedKeys['w'] || pressedKeys['ArrowUp']) player.move(1);
+	if (pressedKeys['s'] || pressedKeys['ArrowDown']) player.move(-1);
 }
 
 // This is a dictionary that will hold the keys that are being held down at the time.
 // If you'd like to know more about dictionaries, see this link:
 // https://pietschsoft.com/post/2015/09/05/javascript-basics-how-to-create-a-dictionary-with-keyvalue-pairs
 const pressedKeys = {};
+
+// Should kill all asteroids on screen
+const sendTacticalNuke = () => {
+	map.movableEntities.forEach(entity => {
+		if (entity instanceof Asteroid){
+			entity.mapInstance.removeEntity(entity);
+			entity.delete();
+		} 
+	});
+}
+
+document.getElementById("nuke").addEventListener("click", sendTacticalNuke);
 
 // This function will run every time the player presses a key
 document.body.addEventListener('keydown', event => {

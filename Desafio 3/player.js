@@ -41,7 +41,7 @@ class Player extends MovableEntity {
 		mapInstance.addEntity(this);
 
 		// Assigns the player's image to it's element
-		this.rootElement.style.backgroundImage = "url('assets/player.svg')";
+		this.rootElement.style.backgroundImage = "url('assets/DurrrSpaceShip.png')";
 		this.rootElement.style.backgroundSize = this.size + 'px';
 	}
 
@@ -53,11 +53,25 @@ class Player extends MovableEntity {
 		this.setDirection(this.direction.rotate(degrees));
 	}
 
+	/**  
+	* Moves player based on currently faced direction
+	*  @argument { number } orientation
+	*/
+	move (orientation) {
+		// Adds or subtracts direction based on orientation given by key press
+		if (orientation > 0) this.position = this.position.add(this.direction);
+		else this.position = this.position.subtract(this.direction);
+
+		// Updates the object element's position
+		this.rootElement.style.left = this.position.x + 'px';
+		this.rootElement.style.top = this.position.y + 'px';
+	}
+
 	/**
 	* Instantiates a bullet in front of the player.
 	*/
 	shoot () {
-		new Bullet (this.containerElement, this.mapInstance, this.direction);
+		new Bullet (this.containerElement, this.mapInstance, this.direction, this.position);
 	}
 
 	/**
