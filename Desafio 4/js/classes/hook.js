@@ -1,6 +1,6 @@
 const HOOK_SIZE = new Vector(20, 20);
-const THROW_SPEED = 0.5;
-const BASE_HOOK_PULL_SPEED = 0.3;
+const THROW_SPEED = 1.5;
+const BASE_HOOK_PULL_SPEED = 1.5;
 const EMPTY_HOOK_SPEED = 2.0;
 const CHAIN_SPACING = 7;
 const CHAIN_SIZE = 10;
