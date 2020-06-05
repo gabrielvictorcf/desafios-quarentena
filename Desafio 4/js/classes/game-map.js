@@ -35,6 +35,13 @@ class GameMap extends Entity {
 		this.floor = new Entity(containerElement, new Vector(MAP_SIZE.x, 1), new Vector(0, FLOOR_HEIGHT));
 		this.floor.rootElement.style.border = '1px solid black';
 		this.floor.rootElement.style.zIndex = '1';
+		
+		
+		/** 
+		*	Reference for proceeding or ending the game. 
+		* @type { 'ongoing' | 'lost' | 'won' }
+		*/
+		this.gameState = 'ongoing';
 
 		// The current game level. Will increase when player captures enough gold
 		this.level = 0;
@@ -51,7 +58,6 @@ class GameMap extends Entity {
 		while (this.getCurrentGoldScoreInMap() < this.calculateTotalGoldScore()) {
 			this.generateItem('gold');
 		}
-
 		for (let i = 0; i < this.calculateNumberOfRocks(); i ++) {
 			this.generateItem('rock');
 		}
@@ -59,12 +65,12 @@ class GameMap extends Entity {
 	}
 	
 	nextLevel () {
+		if (this.level === 5) this.gameState = 'won';
 		this.level ++;
-		// console.log('next level');
+		player.renewDynamites();
 		// Delete all remaining gold and rock elements
 		Gold.allGoldElements.forEach(gold => gold.delete());
 		Rock.allRockElements.forEach(rock => rock.delete());
-		player.renewDynamites();
 		this.initializeLevel();
 	}
 
@@ -197,8 +203,22 @@ class GameMap extends Entity {
 		rockAndGoldEntities.forEach(entity => {
 			this.verifyForCollision(hook, entity);
 		});
-
+		
 		// pull back the hook if it's gone too far
 		if (this.isEntityOutOfBounds(hook)) hook.pullBack();
+
+		//	Treats if the game should continue and outputs final score
+		switch (this.gameState) {
+			case 'lost':
+				alert("You lost!\n Final score: " + player.score * (player.lives + 2) );
+				clearInterval(intervalHandler);		
+				break;
+			case 'won':
+				alert("You won!!!!\n Final score: " + player.score * (player.lives + 2) );
+				clearInterval(intervalHandler);		
+				break;
+			default:
+				break;
+		};
 	}
 }

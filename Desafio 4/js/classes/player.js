@@ -44,6 +44,9 @@ class Player extends Entity {
 
 		// Will hold the player's total score.
 		this.score = 0;
+
+		//	Maximum number of rocks player can pull, also score multiplier :)
+		this.lives = 2;
 		
 		this.dynamites = 0;
 
@@ -69,8 +72,9 @@ class Player extends Entity {
 	//	consumes dynamite to explode currently pulled object
 	useDynamite () {
 		if(!this.dynamites) return;
-
 		this.dynamites--;
+
+		this.hook.exploded = true;
 		this.hook.velocity = 0;
 		this.hook.hookedObject.rootElement.style.backgroundImage = "url('assets/placeholder_explosion')";
 		setTimeout( () =>{
@@ -80,5 +84,10 @@ class Player extends Entity {
 	
 	renewDynamites () {
 		this.dynamites = 2;
+	}
+
+	damagedByRock () {
+		if (this.lives === 0) map.gameState = 'lost';
+		this.lives--;
 	}
 }

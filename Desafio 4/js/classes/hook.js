@@ -57,6 +57,11 @@ class Hook extends MovableEntity {
 		*/
 		this.state = 'swinging';
 
+		/* 
+		*	Flags if player used dynamite. Prevents taking damage on stopPulling ()
+		*/
+		this.exploded = false;
+
 		/**
 		* This will hold the hooked object (gold of rock). If null, no object is currently being hooked
 		* @type { Entity | null }
@@ -210,9 +215,12 @@ class Hook extends MovableEntity {
 				// Gold was brought back! call the gold delivery callback.
 				this.onGoldDelivered(this.hookedObject);
 			}
-			// removes forever the object that was pulled.
+			else if (this.exploded === false) player.damagedByRock();
+
+			// removes forever the object that was pulled and resets exploded flag.
 			this.hookedObject.delete();
 			this.hookedObject = null;
+			this.exploded = false;
 		}
 	}
 
