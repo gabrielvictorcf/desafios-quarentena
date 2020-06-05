@@ -44,6 +44,8 @@ class Player extends Entity {
 
 		// Will hold the player's total score.
 		this.score = 0;
+		
+		this.dynamites = 0;
 
 		Player.instance = this;
 	}
@@ -62,5 +64,21 @@ class Player extends Entity {
 
 	throwHook () {
 		this.hook.throw();
+	}
+
+	//	consumes dynamite to explode currently pulled object
+	useDynamite () {
+		if(!this.dynamites) return;
+
+		this.dynamites--;
+		this.hook.velocity = 0;
+		this.hook.hookedObject.rootElement.style.backgroundImage = "url('assets/placeholder_explosion')";
+		setTimeout( () =>{
+			this.hook.stopPulling();
+		} , 500);
+	}
+	
+	renewDynamites () {
+		this.dynamites = 2;
 	}
 }

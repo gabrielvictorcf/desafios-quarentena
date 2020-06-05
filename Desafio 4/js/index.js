@@ -11,6 +11,11 @@ function frame () {
 
 // This function will run every time the player presses a key
 document.body.addEventListener('keydown', event => {
+	//	
+	if (event.key === 'D' || event.key === 'd' && player.hook.hookedObject instanceof Rock){
+		player.useDynamite();
+	};
+
 	// if that key is the spacebar, the player will try to throw it's hook.
 	if (event.key === ' ') player.throwHook();
 });

@@ -64,6 +64,7 @@ class GameMap extends Entity {
 		// Delete all remaining gold and rock elements
 		Gold.allGoldElements.forEach(gold => gold.delete());
 		Rock.allRockElements.forEach(rock => rock.delete());
+		player.renewDynamites();
 		this.initializeLevel();
 	}
 
