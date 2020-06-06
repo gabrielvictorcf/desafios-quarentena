@@ -63,7 +63,7 @@ class Hook extends MovableEntity {
 		this.exploded = false;
 
 		/**
-		* This will hold the hooked object (gold of rock). If null, no object is currently being hooked
+		* This will hold the hooked object (gold, rock or dynamite). If null, no object is currently being hooked
 		* @type { Entity | null }
 		*/
 		this.hookedObject = null;
@@ -215,7 +215,8 @@ class Hook extends MovableEntity {
 				// Gold was brought back! call the gold delivery callback.
 				this.onGoldDelivered(this.hookedObject);
 			}
-			else if (this.exploded === false) player.damagedByRock();
+			else if (this.hookedObject instanceof Rock && this.exploded === false) player.damagedByRock();
+			else if (this.hookedObject instanceof Dynamite) player.dynamites++;
 
 			// removes forever the object that was pulled and resets exploded flag.
 			this.hookedObject.delete();
@@ -230,7 +231,7 @@ class Hook extends MovableEntity {
 	* allow for behavior extension.
 	*/
 	collided (object) {
-		if (object instanceof Gold || object instanceof Rock) {
+		if (object instanceof Gold || object instanceof Rock || object instanceof Dynamite) {
 			this.hookedObject = object;
 			this.hookedObject.offset = this.hookedObject.position.subtract(this.position);
 			this.pullBack();
