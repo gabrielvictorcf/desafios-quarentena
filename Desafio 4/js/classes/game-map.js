@@ -31,7 +31,8 @@ class GameMap extends Entity {
 		super(containerElement, MAP_SIZE);
 
 		// Create the map's box and floor
-		this.rootElement.style.border = '1px solid black';
+		this.rootElement.style.border = '3px solid red';
+
 		this.floor = new Entity(containerElement, new Vector(MAP_SIZE.x, 1), new Vector(0, FLOOR_HEIGHT));
 		this.floor.rootElement.style.border = '1px solid black';
 		this.floor.rootElement.style.zIndex = '1';

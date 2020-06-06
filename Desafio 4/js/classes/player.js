@@ -32,7 +32,7 @@ class Player extends Entity {
 		super(containerElement, PLAYER_SIZE, new Vector(0, -120));
 
 		// Assigns the player's image to it's element
-		this.rootElement.style.backgroundImage = "url('assets/player.svg')";
+		this.rootElement.style.backgroundImage = "url('assets/miner.png')";
 
 		// Creates the player's hook instance.
 		const hookOffset = new Vector(0, PLAYER_SIZE.y / 2 + HOOK_SIZE.y / 2 - 10);
@@ -76,7 +76,6 @@ class Player extends Entity {
 
 		this.hook.exploded = true;
 		this.hook.velocity = 0;
-		this.hook.hookedObject.rootElement.style.backgroundImage = "url('assets/placeholder_explosion')";
 		setTimeout( () =>{
 			this.hook.stopPulling();
 		} , 500);

@@ -1,5 +1,5 @@
-const MAX_DYNAMITE_SIZE = 20;
-const MIN_DYNAMITE_SIZE = 10;
+const MAX_DYNAMITE_SIZE = 35;
+const MIN_DYNAMITE_SIZE = 25;
 
 const MIN_DYNAMITE_SPEED_MULTIPLIER = 1.0;
 const MAX_DYNAMITE_SPEED_MULTIPLIER = 0.7;
@@ -36,7 +36,7 @@ class Dynamite extends Entity {
 		super(containerElement, new Vector(1, 1).scale(size), initialPosition, direction);
 
 		// Assigns the hook's image to it's element
-		this.rootElement.style.backgroundImage = "url('assets/dynamite.jpg')";
+		this.rootElement.style.backgroundImage = "url('assets/dynamite.png')";
 
 		// Add element to rocks list, for easier tracking.
 		Dynamite.allDynamiteElements.push(this);
