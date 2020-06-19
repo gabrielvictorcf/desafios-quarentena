@@ -32,7 +32,7 @@ class Player extends Entity {
 		super(containerElement, PLAYER_SIZE, new Vector(0, -120));
 
 		// Assigns the player's image to it's element
-		this.rootElement.style.backgroundImage = "url('assets/player.svg')";
+		this.rootElement.style.backgroundImage = "url('assets/miner.png')";
 
 		// Creates the player's hook instance.
 		const hookOffset = new Vector(0, PLAYER_SIZE.y / 2 + HOOK_SIZE.y / 2 - 10);
@@ -45,6 +45,11 @@ class Player extends Entity {
 		// Will hold the player's total score.
 		this.score = 0;
 
+		//	Maximum number of rocks player can pull, also score multiplier :)
+		this.lives = 2;
+		
+		this.dynamites = 0;
+
 		Player.instance = this;
 	}
 
@@ -55,11 +60,33 @@ class Player extends Entity {
 	*/
 	onGoldHooked (goldElement) {
 		this.score += goldElement.calculateScore();
-		console.log('current player score is', this.score);
+		document.getElementById('score').innerHTML = "Score: " + this.score;
+		// console.log('current player score is', this.score);
 		GameMap.instance.verifyIfLevelIsOver();
 	}
 
 	throwHook () {
 		this.hook.throw();
+	}
+
+	//	consumes dynamite to explode currently pulled object
+	useDynamite () {
+		if(!this.dynamites) return;
+		this.dynamites--;
+
+		this.hook.exploded = true;
+		this.hook.velocity = 0;
+		setTimeout( () =>{
+			this.hook.stopPulling();
+		} , 500);
+	}
+	
+	renewDynamites () {
+		this.dynamites = 2;
+	}
+
+	damagedByRock () {
+		if (this.lives === 0) map.gameState = 'lost';
+		this.lives--;
 	}
 }

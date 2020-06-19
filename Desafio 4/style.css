@@ -3,6 +3,7 @@
 }
 
 body, html {
+	background-color: indigo;
 	margin: 0;
 	height: 100%;
 	overflow: hidden;
@@ -33,4 +34,21 @@ body, html {
 
 .movable-entity, .entity {
 	position: absolute;
+	background-image: url(assets/dirt.png);
+}
+
+#score {
+	position: absolute;
+	margin-top: 180px;
+	font-size: 2em;
+	color: gold;
+	width: 90px;
+	height: 60px;	
+}
+
+#current-level {
+	font-size: 2em;
+	color: gold;
+	width: 90px;
+	height: 60px;	
 }
