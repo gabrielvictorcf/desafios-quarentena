@@ -31,10 +31,18 @@ class GameMap extends Entity {
 		super(containerElement, MAP_SIZE);
 
 		// Create the map's box and floor
-		this.rootElement.style.border = '1px solid black';
+		this.rootElement.style.border = '3px solid red';
+
 		this.floor = new Entity(containerElement, new Vector(MAP_SIZE.x, 1), new Vector(0, FLOOR_HEIGHT));
 		this.floor.rootElement.style.border = '1px solid black';
 		this.floor.rootElement.style.zIndex = '1';
+		
+		
+		/** 
+		*	Reference for proceeding or ending the game. 
+		* @type { 'ongoing' | 'lost' | 'won' }
+		*/
+		this.gameState = 'ongoing';
 
 		// The current game level. Will increase when player captures enough gold
 		this.level = 0;
@@ -45,24 +53,28 @@ class GameMap extends Entity {
 	}
 
 	/**
-	* Will initialize the whole level, creating all golds and rocks
+	* Will initialize the whole level, creating all golds, rocks and dynamites
 	*/
 	initializeLevel () {
 		while (this.getCurrentGoldScoreInMap() < this.calculateTotalGoldScore()) {
 			this.generateItem('gold');
 		}
-
 		for (let i = 0; i < this.calculateNumberOfRocks(); i ++) {
 			this.generateItem('rock');
 		}
-	}
+		this.generateItem('dynamite');
 
+		document.getElementById('current-level').innerHTML = "Level: " + this.level;
+	}
+	
 	nextLevel () {
+		if (this.level === 5) this.gameState = 'won';
 		this.level ++;
-		console.log('next level');
-		// Delete all remaining gold and rock elements
+		player.renewDynamites();
+		// Delete all remaining gold, rock and dynamite elements
 		Gold.allGoldElements.forEach(gold => gold.delete());
 		Rock.allRockElements.forEach(rock => rock.delete());
+		Dynamite.allDynamiteElements.forEach(dynamite => dynamite.delete());
 		this.initializeLevel();
 	}
 
@@ -127,12 +139,13 @@ class GameMap extends Entity {
 
 	/**
 	* Will generate either a rock element, or a gold element.
-	* @argument { 'rock' | 'gold' } itemType
+	* @argument { 'rock' | 'gold' | 'dynamite'} itemType
 	*/
 	generateItem (itemType) {
 		let element;
 		if (itemType === 'rock') element = new Rock(this.containerElement, Vector.zero);
 		else if (itemType === 'gold') element = new Gold(this.containerElement, Vector.zero);
+		else if (itemType === 'dynamite') element = new Dynamite(this.containerElement, Vector.zero);
 		else throw new Error(`Invalid item type '${itemType}'`);
 
 		// Checks if the new element is colliding with anything on the map
@@ -141,6 +154,8 @@ class GameMap extends Entity {
 			if (isCollidingWithRocks) return true;
 			const isCollidingWithGold = Gold.allGoldElements.some(gold => Entity.didEntitiesColide(gold, element));
 			if (isCollidingWithGold) return true;
+			const isCollidingWithDynamite = Dynamite.allDynamiteElements.some(dynamite => Entity.didEntitiesColide(dynamite, element));
+			if (isCollidingWithDynamite) return true;
 			return false;
 		}
 
@@ -190,13 +205,27 @@ class GameMap extends Entity {
 		// No need to check for collision if the hook is being pulled back
 		if (hook.status === 'pulling') return;
 
-		const rockAndGoldEntities = Rock.allRockElements.concat(Gold.allGoldElements);
+		const allEntitiesInMap = Rock.allRockElements.concat(Gold.allGoldElements).concat(Dynamite.allDynamiteElements);
 
-		rockAndGoldEntities.forEach(entity => {
+		allEntitiesInMap.forEach(entity => {
 			this.verifyForCollision(hook, entity);
 		});
-
+		
 		// pull back the hook if it's gone too far
 		if (this.isEntityOutOfBounds(hook)) hook.pullBack();
+
+		//	Treats if the game should continue and outputs final score
+		switch (this.gameState) {
+			case 'lost':
+				alert("You lost!\n Final score: " + player.score * (player.lives + 2) );
+				clearInterval(intervalHandler);		
+				break;
+			case 'won':
+				alert("You won!!!!\n Final score: " + player.score * (player.lives + 2) );
+				clearInterval(intervalHandler);		
+				break;
+			default:
+				break;
+		};
 	}
 }
