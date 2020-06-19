@@ -36,7 +36,7 @@ class Rock extends Entity {
 		super(containerElement, new Vector(1, 1).scale(size), initialPosition, direction);
 
 		// Assigns the hook's image to it's element
-		this.rootElement.style.backgroundImage = "url('assets/rock.png')";
+		this.rootElement.style.backgroundImage = "url('assets/rock.svg')";
 
 		// Add element to rocks list, for easier tracking.
 		Rock.allRockElements.push(this);

@@ -1,6 +1,6 @@
 const HOOK_SIZE = new Vector(20, 20);
-const THROW_SPEED = 1.5;
-const BASE_HOOK_PULL_SPEED = 1.5;
+const THROW_SPEED = 0.5;
+const BASE_HOOK_PULL_SPEED = 0.3;
 const EMPTY_HOOK_SPEED = 2.0;
 const CHAIN_SPACING = 7;
 const CHAIN_SIZE = 10;
@@ -57,13 +57,8 @@ class Hook extends MovableEntity {
 		*/
 		this.state = 'swinging';
 
-		/* 
-		*	Flags if player used dynamite. Prevents taking damage on stopPulling ()
-		*/
-		this.exploded = false;
-
 		/**
-		* This will hold the hooked object (gold, rock or dynamite). If null, no object is currently being hooked
+		* This will hold the hooked object (gold of rock). If null, no object is currently being hooked
 		* @type { Entity | null }
 		*/
 		this.hookedObject = null;
@@ -215,13 +210,9 @@ class Hook extends MovableEntity {
 				// Gold was brought back! call the gold delivery callback.
 				this.onGoldDelivered(this.hookedObject);
 			}
-			else if (this.hookedObject instanceof Rock && this.exploded === false) player.damagedByRock();
-			else if (this.hookedObject instanceof Dynamite) player.dynamites++;
-
-			// removes forever the object that was pulled and resets exploded flag.
+			// removes forever the object that was pulled.
 			this.hookedObject.delete();
 			this.hookedObject = null;
-			this.exploded = false;
 		}
 	}
 
@@ -231,7 +222,7 @@ class Hook extends MovableEntity {
 	* allow for behavior extension.
 	*/
 	collided (object) {
-		if (object instanceof Gold || object instanceof Rock || object instanceof Dynamite) {
+		if (object instanceof Gold || object instanceof Rock) {
 			this.hookedObject = object;
 			this.hookedObject.offset = this.hookedObject.position.subtract(this.position);
 			this.pullBack();
