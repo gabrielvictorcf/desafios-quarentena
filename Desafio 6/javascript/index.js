@@ -1,6 +1,6 @@
 process.env.NTBA_FIX_319 = true; // Silences an annoying error message.
 const TelegramBot = require('node-telegram-bot-api');
-const jokempo = require('./jokempo');
+const guessGame = require('./guess');
 const randomPhrases = require('./random-phrases');
 const botFile = require('./token');
 
@@ -32,13 +32,18 @@ bot.on('message', async (msg) => {
 	if (chatMessage.startsWith('ola') || chatMessage.startsWith('oi')) {
 		bot.sendMessage(chatId, 'Olá! Como vai o seu dia?');
 	}
+	else if(chatMessage.startsWith(`/help`)){
+		bot.sendMessage(chatId,`Meus comandos são:\n`+
+		"/help - Veja meus comandos\n"+
+		"/adivinhe - Tente acertar o numero em que pensei");
+	}
 	else if(chatMessage.includes(`que dia é hoje`)){
 		bot.sendMessage(chatId,`Hoje é ${weekDays[curDate.getDay()]}!`);
 	}
 	else if(chatMessage.startsWith(`quem te fez`)){
 		bot.sendMessage(chatId,`Gabriel V!`);
 	}
-	else if (jokempo.main(bot, chatId, chatMessage)) {
+	else if(guessGame.main(bot,chatId,chatMessage)){
 		return;
 	} else {
 		randomPhrases.writeRandomPhrase(bot, chatId);
