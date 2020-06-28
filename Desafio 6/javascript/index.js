@@ -2,9 +2,10 @@ process.env.NTBA_FIX_319 = true; // Silences an annoying error message.
 const TelegramBot = require('node-telegram-bot-api');
 const jokempo = require('./jokempo');
 const randomPhrases = require('./random-phrases');
+const botFile = require('./token');
 
 // replace the value below with the Telegram token you receive from @BotFather
-const token = 'YOUR ACCESS TOKEN HERE';
+const token = botFile.testBot.token;
 
 if (token === 'YOUR ACCESS TOKEN HERE') {
 	console.log('You forgot to replate the access token!!! Properly read the README before continuing >:(');
@@ -13,15 +14,31 @@ if (token === 'YOUR ACCESS TOKEN HERE') {
 
 // Create a bot that uses 'polling' to fetch new updates
 const bot = new TelegramBot(token, {polling: true});
+bot.commands = {
+	help: "/help - Veja os comandos disponíveis",
+	jokempo: "/jokempo - Me derrote no Jokempo!",
+	numGuess: "/adivinhe - Acerte o numero em que estou pensando!"
+}
 
 // Listen for any kind of message. There are different kinds of
 // messages.
 bot.on('message', async (msg) => {
 	const chatMessage = msg.text.trim().toLowerCase();
 	const chatId = msg.chat.id;
+	const curDate = new Date();
+	//Esse array é uma enumeração dos dias, já que getDay() retorna um numero
+	const weekDays = [`Domingo`,`Segunda`,`Terça`,`Quarta`,`Quinta`,`Sexta`,`Sabado`];
+	
 	if (chatMessage.startsWith('ola') || chatMessage.startsWith('oi')) {
 		bot.sendMessage(chatId, 'Olá! Como vai o seu dia?');
-	} else if (jokempo.main(bot, chatId, chatMessage)) {
+	}
+	else if(chatMessage.includes(`que dia é hoje`)){
+		bot.sendMessage(chatId,`Hoje é ${weekDays[curDate.getDay()]}!`);
+	}
+	else if(chatMessage.startsWith(`quem te fez`)){
+		bot.sendMessage(chatId,`Gabriel V!`);
+	}
+	else if (jokempo.main(bot, chatId, chatMessage)) {
 		return;
 	} else {
 		randomPhrases.writeRandomPhrase(bot, chatId);
